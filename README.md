@@ -5,7 +5,7 @@ A simple, clean website to track currency exchange rates with interactive charts
 ## Features
 
 - **Real-time Currency Rates**: Display current exchange rates for EUR against major currencies
-- **Interactive Charts**: Visual representation of exchange rates using Chart.js
+- **Interactive Charts**: Visual representation of exchange rates using custom CSS-based bar charts
 - **Comprehensive Table**: Complete list of all available currencies with their rates
 - **Featured Rates**: Highlighted display for EUR/USD and EUR/Gold (per gram)
 - **Auto-refresh**: Data automatically updates every 5 minutes
@@ -35,5 +35,5 @@ Exchange rate data is provided by [exchangerate-api.com](https://exchangerate-ap
 - HTML5
 - CSS3
 - JavaScript (ES6+)
-- Chart.js for data visualization
+- Custom CSS-based bar chart for data visualization
 - exchangerate-api.com API for currency data

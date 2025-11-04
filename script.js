@@ -235,10 +235,13 @@ function refreshData() {
     button.textContent = 'Refreshing...';
     button.disabled = true;
     
-    fetchCurrencyData().then(() => {
+    fetchCurrencyData();
+    
+    // Re-enable button after a short delay
+    setTimeout(() => {
         button.textContent = 'Refresh Data';
         button.disabled = false;
-    });
+    }, 1000);
 }
 
 // Show error message
