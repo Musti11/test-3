@@ -25,9 +25,47 @@ const currencyNames = {
     'HKD': 'Hong Kong Dollar'
 };
 
+// Sample data for fallback (approximate rates as of Nov 2024)
+const sampleData = {
+    "base": "EUR",
+    "date": "2024-11-04",
+    "time_last_updated": Date.now(),
+    "rates": {
+        "USD": 1.0876,
+        "GBP": 0.8421,
+        "JPY": 164.32,
+        "CHF": 0.9432,
+        "CAD": 1.5123,
+        "AUD": 1.6543,
+        "CNY": 7.7821,
+        "INR": 91.234,
+        "XAU": 0.00045,
+        "BRL": 6.1234,
+        "RUB": 106.543,
+        "KRW": 1487.65,
+        "SEK": 11.543,
+        "NOK": 11.876,
+        "DKK": 7.4532,
+        "TRY": 37.654,
+        "MXN": 22.123,
+        "ZAR": 19.876,
+        "SGD": 1.4532,
+        "HKD": 8.4765,
+        "NZD": 1.7891,
+        "PLN": 4.3214,
+        "THB": 38.765,
+        "MYR": 4.8765,
+        "IDR": 17234.5,
+        "PHP": 62.345,
+        "CZK": 25.234,
+        "ILS": 4.1234,
+        "CLP": 1034.56,
+        "ARS": 1089.34
+    }
+};
+
 // Global variables
 let currencyData = null;
-let chart = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -52,7 +90,19 @@ async function fetchCurrencyData() {
         updateLastUpdateTime();
     } catch (error) {
         console.error('Error fetching currency data:', error);
-        showError('Unable to fetch currency data. Please try again later.');
+        console.log('Using sample data for demonstration');
+        
+        // Use sample data as fallback
+        currencyData = sampleData;
+        updateUI(sampleData);
+        updateLastUpdateTime();
+        
+        // Show info message instead of error
+        const lastUpdate = document.getElementById('lastUpdate');
+        if (lastUpdate) {
+            lastUpdate.textContent = 'Using sample data for demonstration';
+            lastUpdate.style.color = '#ff9800';
+        }
     }
 }
 
@@ -123,82 +173,50 @@ function updateCurrencyTable(data) {
 
 // Update or create the chart
 function updateChart(data) {
-    const ctx = document.getElementById('currencyChart').getContext('2d');
+    const chartContainer = document.getElementById('currencyChart');
     const rates = data.rates;
     
     // Select major currencies for the chart
     const majorCurrencies = ['USD', 'GBP', 'JPY', 'CHF', 'CAD', 'AUD', 'CNY', 'INR'];
-    const labels = [];
-    const values = [];
     
+    // Clear existing chart
+    chartContainer.innerHTML = '';
+    
+    // Find max value for scaling
+    let maxRate = 0;
     majorCurrencies.forEach(code => {
-        if (rates[code]) {
-            labels.push(code);
-            values.push(rates[code]);
+        if (rates[code] && rates[code] > maxRate) {
+            maxRate = rates[code];
         }
     });
     
-    // Destroy existing chart if it exists
-    if (chart) {
-        chart.destroy();
-    }
-    
-    // Create new chart
-    chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Exchange Rate (per 1 EUR)',
-                data: values,
-                backgroundColor: [
-                    'rgba(102, 126, 234, 0.8)',
-                    'rgba(118, 75, 162, 0.8)',
-                    'rgba(255, 99, 132, 0.8)',
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(255, 206, 86, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)',
-                    'rgba(255, 159, 64, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(102, 126, 234, 1)',
-                    'rgba(118, 75, 162, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `1 EUR = ${context.parsed.y.toFixed(4)} ${context.label}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value.toFixed(2);
-                        }
-                    }
-                }
-            }
+    // Create bars
+    majorCurrencies.forEach(code => {
+        if (rates[code]) {
+            const barItem = document.createElement('div');
+            barItem.className = 'bar-item';
+            
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            
+            // Calculate height as percentage of max
+            const heightPercent = (rates[code] / maxRate) * 100;
+            bar.style.height = `${heightPercent}%`;
+            
+            const barValue = document.createElement('div');
+            barValue.className = 'bar-value';
+            barValue.textContent = rates[code].toFixed(2);
+            
+            bar.appendChild(barValue);
+            
+            const barLabel = document.createElement('div');
+            barLabel.className = 'bar-label';
+            barLabel.textContent = code;
+            
+            barItem.appendChild(bar);
+            barItem.appendChild(barLabel);
+            
+            chartContainer.appendChild(barItem);
         }
     });
 }

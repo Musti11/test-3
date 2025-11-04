@@ -103,6 +103,57 @@ main {
     max-height: 400px;
 }
 
+/* CSS-based Bar Chart */
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 350px;
+    padding: 20px;
+    gap: 10px;
+}
+
+.bar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 60px;
+}
+
+.bar {
+    width: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 5px 5px 0 0;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.bar:hover {
+    opacity: 0.8;
+    transform: scaleY(1.02);
+}
+
+.bar-value {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75em;
+    font-weight: bold;
+    color: #495057;
+    white-space: nowrap;
+}
+
+.bar-label {
+    margin-top: 8px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9em;
+}
+
 /* Table Section */
 .table-section {
     margin-bottom: 30px;
