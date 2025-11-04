@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Currency Exchange Tracker</h1>
+            <p>Real-time currency rates and charts</p>
+        </header>
+
+        <main>
+            <!-- Currency Rate Cards -->
+            <div class="cards-section">
+                <div class="card">
+                    <h3>EUR/USD</h3>
+                    <div class="rate" id="eur-usd-rate">Loading...</div>
+                    <div class="timestamp" id="eur-usd-time"></div>
+                </div>
+                <div class="card">
+                    <h3>EUR/Gold (XAU)</h3>
+                    <div class="rate" id="eur-gold-rate">Loading...</div>
+                    <div class="timestamp" id="eur-gold-time"></div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>EUR Exchange Rates Chart</h3>
+                    <canvas id="currencyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Currency Table -->
+            <div class="table-section">
+                <h3>All Currency Rates (Base: EUR)</h3>
+                <div class="table-controls">
+                    <button id="refreshBtn" onclick="refreshData()">Refresh Data</button>
+                    <span class="last-update" id="lastUpdate"></span>
+                </div>
+                <table id="currencyTable">
+                    <thead>
+                        <tr>
+                            <th>Currency</th>
+                            <th>Code</th>
+                            <th>Rate (per 1 EUR)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="currencyTableBody">
+                        <tr>
+                            <td colspan="3">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <p>Data provided by exchangerate-api.com | Updated in real-time</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
